@@ -375,7 +375,7 @@ class FormsLibrary(object):
         print("starting process ", command )
         REMOTE_AGENTS_LIST.set_received_to_old()
         with self._agent_java_tool_options():
-            self.PROCESS.start_process(command, alias=alias, shell=True, 
+            self.PROCESS.start_process(command, alias=alias, shell=True,
                                        stdout=self._output(stdout),
                                        stderr=self._output(stderr))
         try:
@@ -547,8 +547,8 @@ class FormsLibrary(object):
         # to do it we find minimal n which satisfies ((n)*(n-1))/2 >= TIMEOUT
         # solution is ceil(sqrt(TIMEOUT*2*4+1)/2+0.5)
         attempts = int(math.ceil(math.sqrt(FormsLibrary.TIMEOUT*2*4+1)/2+0.5))
-        overrided_keywords = ['startApplication', 'launchApplication', 'startApplicationInSeparateThread']  
-        
+        overrided_keywords = ['startApplication', 'launchApplication', 'startApplicationInSeparateThread']
+
         if self.current:
             return FormsLibrary.KEYWORDS + [kw for
                                       kw in self.current.get_keyword_names(attempts=attempts)
@@ -582,19 +582,19 @@ class FormsLibrary(object):
         if name in FormsLibrary.KEYWORDS or name == '__init__':
             return getattr(self, name).__doc__
         if self.current:
-        	return self.current.get_keyword_documentation(name)
+            return self.current.get_keyword_documentation(name)
         return FormsLibrary_Keywords.keyword_documentation[name]
 
     def run_keyword(self, name, arguments, kwargs):
-		if unicode(name).startswith(u"capture"):
-			path = self.current.run_keyword(name, arguments, kwargs)
-			defaultLogger.info(path, html=True)
-			logger.info('<a href="%s"><img src="%s" width="800px"></a>' % (path, path), html=True)
-			logger.info("<a href=\"%s\">Screenshot</a> saved." % (path), html=True)
-			return path
-		if name in FormsLibrary.KEYWORDS:
-			return getattr(self, name)(*arguments, **kwargs)        
-		if self.current:
-			return self.current.run_keyword(name, arguments, kwargs)
-		if name in FormsLibrary_Keywords.keywords:
-			raise Exception("To use this keyword, you need to connect to the application first.")
+        if name.startswith("capture"):
+            path = self.current.run_keyword(name, arguments, kwargs)
+            defaultLogger.info(path, html=True)
+            logger.info('<a href="%s"><img src="%s" width="800px"></a>' % (path, path), html=True)
+            logger.info("<a href=\"%s\">Screenshot</a> saved." % (path), html=True)
+            return path
+        if name in FormsLibrary.KEYWORDS:
+            return getattr(self, name)(*arguments, **kwargs)
+        if self.current:
+            return self.current.run_keyword(name, arguments, kwargs)
+        if name in FormsLibrary_Keywords.keywords:
+            raise Exception("To use this keyword, you need to connect to the application first.")
