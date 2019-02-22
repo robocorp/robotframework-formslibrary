@@ -22,8 +22,9 @@ import sun.awt.AppContext;
 @SuppressWarnings("restriction")
 public class FrameOperator extends ContainerOperator implements ComponentWrapper {
 
-	private static final String ORACLE_FORMS_FRAME_TITLE = "Oracle Fusion Middleware Forms Services";
-	private static final String WORKFLOW_FRAME_TITLE = "Workflow";
+	// FIXME: remove the hardcoding on the below lines:
+	private static final String ORACLE_FORMS_FRAME_TITLE = "Visma Fivaldi";
+	private static final String WORKFLOW_FRAME_TITLE = "Main0";
 
 	/**
 	 * Create a new frame operator for a provided Frame.
