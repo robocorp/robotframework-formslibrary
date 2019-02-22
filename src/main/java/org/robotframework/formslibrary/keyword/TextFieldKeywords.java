@@ -1,10 +1,13 @@
 package org.robotframework.formslibrary.keyword;
 
+import org.robotframework.formslibrary.context.ContextChangeMonitor;
 import org.robotframework.formslibrary.operator.LabelOperator;
 import org.robotframework.formslibrary.operator.TextFieldOperatorFactory;
+import org.robotframework.formslibrary.operator.TextFieldOperator;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.RobotKeyword;
 import org.robotframework.javalib.annotation.RobotKeywords;
+import org.robotframework.javalib.annotation.RobotKeywordOverload;
 
 @RobotKeywords
 public class TextFieldKeywords {
@@ -45,6 +48,27 @@ public class TextFieldKeywords {
 	public String getFieldNextToLabel(String identifier) {
 		LabelOperator label = new LabelOperator(identifier);
 		return TextFieldOperatorFactory.getOperator(label).getValue();
+	}
+
+	@RobotKeyword("Uses current context to search for a textfield by its label and when found, pushes it.\n\n "
+			+ " If the button opens a new window and detectWindowChange=true, the context will be set to the new window automatically. "
+			+ "Similarly if the button closes a window, the context will be reset to the root context. DetectWindowChange defaults to true. Example:\n | Click Text Field | _OK_ |\n")
+	@ArgumentNames({ "identifier", "detectWindowChange=" })
+	public void clickTextField(String identifier, boolean detectWindowChange) {
+
+		if (detectWindowChange) {
+			ContextChangeMonitor monitor = new ContextChangeMonitor();
+			monitor.start();
+			new TextFieldOperator(identifier).push();
+			monitor.stop();
+		} else {
+			new TextFieldOperator(identifier).push();
+		}
+	}
+
+	@RobotKeywordOverload
+	public void clickTextField(String identifier) {
+		clickTextField(identifier, true);
 	}
 
 }

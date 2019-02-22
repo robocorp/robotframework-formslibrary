@@ -1,13 +1,21 @@
 package org.robotframework.formslibrary.operator;
 
 import java.awt.Component;
+import java.awt.TextField;
 import java.awt.event.FocusEvent;
-
 import org.netbeans.jemmy.ComponentChooser;
 import org.robotframework.formslibrary.FormsLibraryException;
+import org.robotframework.formslibrary.util.ComponentUtil;
 import org.robotframework.formslibrary.util.Logger;
 import org.robotframework.formslibrary.util.ObjectUtil;
 import org.robotframework.formslibrary.util.TextUtil;
+
+import java.awt.event.FocusEvent;
+
+import org.robotframework.formslibrary.FormsLibraryException;
+import org.robotframework.formslibrary.chooser.ByNameChooser;
+import org.robotframework.formslibrary.util.ComponentType;
+import org.robotframework.formslibrary.util.ObjectUtil;
 
 /**
  * Operator for working with standard text and text area fields.
@@ -28,6 +36,10 @@ public class TextFieldOperator extends AbstractComponentOperator {
 		super(chooser);
 	}
 
+	public TextFieldOperator(String identifier) {
+		super(new ByNameChooser(identifier, ComponentType.ALL_TEXTFIELD_TYPES));
+	}
+
 	/**
 	 * Focus on the field and set the field value.
 	 */
@@ -38,6 +50,11 @@ public class TextFieldOperator extends AbstractComponentOperator {
 		ObjectUtil.invokeMethodWithStringArg(getSource(), "setText()", value);
 		getSource().dispatchEvent(new FocusEvent(getSource(), FocusEvent.FOCUS_LOST));
 		Logger.info("Set field value to '" + value + "'.");
+	}
+
+	public void push() {
+		ComponentUtil.simulateMouseClick(getSource());
+		Logger.debug("Button was pushed.");
 	}
 
 	/**
