@@ -235,7 +235,7 @@ class FormsLibrary(object):
     _output_dir = ''
 
     def __init__(self, port=None, aphost='127.0.0.1', apport=None, debug=False,
-                 close_security_dialogs=False, __reload=False):
+                 close_security_dialogs=False, __reload=False, agentlib_port=8000):
         """
         *port*: optional port for the server receiving connections from remote agents
 
@@ -267,7 +267,7 @@ class FormsLibrary(object):
             FormsLibrary.PORT = self._start_port_server(0 if port == 'TEST' else port or 0)
         FormsLibrary.APHOST = aphost
         FormsLibrary.APPORT = apport
-        self._create_env(bool(debug), bool(close_security_dialogs))
+        self._create_env(bool(debug), bool(close_security_dialogs), agentlib_port)
         if port == 'TEST':
             self.start_application('docgenerator', 'java -jar %s' % FormsLibrary.AGENT_PATH, timeout=4.0)
 
@@ -289,8 +289,8 @@ class FormsLibrary(object):
         t.start()
         return server.server_address[1]
 
-    def _create_env(self, debug, close_security_dialogs):
-        agent_command = ' -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n -javaagent:"%s"=127.0.0.1:%s' % (FormsLibrary.AGENT_PATH, FormsLibrary.PORT)
+    def _create_env(self, debug, close_security_dialogs, agentlib_port):
+        agent_command = ' -agentlib:jdwp=transport=dt_socket,address=%s,server=y,suspend=n -javaagent:"%s"=127.0.0.1:%s' % (agentlib_port, FormsLibrary.AGENT_PATH, FormsLibrary.PORT)
         if FormsLibrary.APPORT:
             agent_command += ':APPORT=%s' % FormsLibrary.APPORT
         if debug:
