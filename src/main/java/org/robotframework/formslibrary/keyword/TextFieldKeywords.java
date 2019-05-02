@@ -1,9 +1,13 @@
 package org.robotframework.formslibrary.keyword;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.Component;
 
 import org.robotframework.formslibrary.context.ContextChangeMonitor;
 import org.robotframework.formslibrary.operator.LabelOperator;
 import org.robotframework.formslibrary.operator.TextFieldOperatorFactory;
 import org.robotframework.formslibrary.operator.TextFieldOperator;
+import org.robotframework.formslibrary.operator.TableOperator;
 import org.robotframework.javalib.annotation.ArgumentNames;
 import org.robotframework.javalib.annotation.RobotKeyword;
 import org.robotframework.javalib.annotation.RobotKeywords;
@@ -69,6 +73,18 @@ public class TextFieldKeywords {
 	@RobotKeywordOverload
 	public void clickTextField(String identifier) {
 		clickTextField(identifier, true);
+	}
+
+	@RobotKeyword("Find text field elements which match the given string")
+	@ArgumentNames({ "text" })
+	public List<String> findTextFields(String text) {
+		List<Component> components =  new TableOperator().findTextFieldsByValue(text);
+
+		List<String> results = new ArrayList<String>();
+		for (Component component: components) {
+			results.add(component.getName());
+		}
+		return results;
 	}
 
 }

@@ -21,7 +21,7 @@ public class TableOperator extends ContextOperator {
 
 	/**
 	 * Locate a matching row by field values.
-	 * 
+	 *
 	 * @return the first field of the matching row.
 	 */
 	private Component findRow(String[] columnValues) {
@@ -102,7 +102,7 @@ public class TableOperator extends ContextOperator {
 		return componentsOnRow;
 	}
 
-	private List<Component> findTextFieldsByValue(String value) {
+	public List<Component> findTextFieldsByValue(String value) {
 
 		List<Component> allTextFields = findComponents(new ByComponentTypeChooser(-1, ComponentType.ALL_TEXTFIELD_TYPES));
 		List<Component> result = new ArrayList<Component>();
