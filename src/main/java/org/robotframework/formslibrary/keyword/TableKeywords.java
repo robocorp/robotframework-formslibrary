@@ -31,24 +31,30 @@ public class TableKeywords {
 		new TableOperator().doubleClickRow(columnValues);
 	}
 
-	@RobotKeyword("Select a row in a result table by content. If the row is not visible, the down button in the scrollbar will be pressed up to 50 times in an attempt to try and locate the row. Specify the index (occurrence) of the scrollbar which should be used for scrolling."
+	@RobotKeyword("Select a row in a result table by content. If the row is not visible, the down button in the scrollbar will be pressed up to numberOfPresses times in an attempt to try and locate the row. Specify the index (occurrence) of the scrollbar which should be used for scrolling."
 			+ "Example:\n" + "| Scroll To Row | _scrollbarIndex_ | _market_ | _gas_ | \n")
-	@ArgumentNames({ "scrollbarIndex", "*columnvalues" })
-	public void scrollToRow(int scrollBarIndex, String... columnValues) {
+	@ArgumentNames({ "scrollbarIndex", "numberOfPresses", "direction", "*columnvalues" })
+	public void scrollToRow(int scrollBarIndex, int numberOfPresses, String direction, String... columnValues) {
 
 		VerticalScrollBarOperator scrollOperator = new VerticalScrollBarOperator(scrollBarIndex - 1);
 
 		TableOperator tableOperator = new TableOperator();
 
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < numberOfPresses; i++) {
 			if (tableOperator.rowExists(columnValues)) {
 				tableOperator.selectRow(columnValues);
 				return;
 			} else {
-				scrollOperator.scrollDown(1);
+				if (direction == "down") {
+					scrollOperator.scrollDown(1);
+				} else if (direction == "up") {
+					scrollOperator.scrollUp(1);
+				} else {
+					throw new FormsLibraryException("Direction should be either 'up' or 'down'");
+				}
 			}
 		}
-		throw new FormsLibraryException("Row could not be found within the first 50 records.");
+		throw new FormsLibraryException("Row could not be found within the first " + numberOfPresses + " records.");
 	}
 
 	@RobotKeyword("Set a field value in a table row." + " The row is identified by values\n\n" + "Example:\n"
