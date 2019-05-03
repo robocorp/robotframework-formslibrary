@@ -45,9 +45,9 @@ public class TableKeywords {
 				tableOperator.selectRow(columnValues);
 				return;
 			} else {
-				if (direction == "down") {
+				if (direction.equals("down")) {
 					scrollOperator.scrollDown(1);
-				} else if (direction == "up") {
+				} else if (direction.equals("up")) {
 					scrollOperator.scrollUp(1);
 				} else {
 					throw new FormsLibraryException("Direction should be either 'up' or 'down', got " + direction);
