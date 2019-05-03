@@ -50,7 +50,7 @@ public class TableKeywords {
 				} else if (direction == "up") {
 					scrollOperator.scrollUp(1);
 				} else {
-					throw new FormsLibraryException("Direction should be either 'up' or 'down'");
+					throw new FormsLibraryException("Direction should be either 'up' or 'down', got " + direction);
 				}
 			}
 		}
